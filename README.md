@@ -4,19 +4,19 @@
 
 ### T2V
 
-[T2V](https://github.com/chaojie/ComfyUI_LaVIT/blob/main/workflow/wf_t2v.json)
+[T2V](https://github.com/chaojie/ComfyUI-LaVIT/blob/main/wf_t2v.json)
 
 <img src="wf_t2v.png" raw=true>
 
 ### I2V
 
-[I2V](https://github.com/chaojie/ComfyUI_LaVIT/blob/main/workflow/wf_i2v.json)
+[I2V](https://github.com/chaojie/ComfyUI-LaVIT/blob/main/wf_i2v.json)
 
 <img src="wf_i2v.png" raw=true>
 
 ### T2V Long Video
 
-[T2V Long](https://github.com/chaojie/ComfyUI_LaVIT/blob/main/workflow/wf_t2v_long.json)
+[T2V Long](https://github.com/chaojie/ComfyUI-LaVIT/blob/main/wf_t2v_long.json)
 
 <img src="wf_t2v_long.png" raw=true>
 
