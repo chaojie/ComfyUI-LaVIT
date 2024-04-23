@@ -124,6 +124,47 @@ class VideoLaVITI2V:
         data = [torch.unsqueeze(torch.tensor(np.array(image).astype(np.float32) / 255.0), 0) for image in videos[0]]
         return torch.cat(tuple(data), dim=0).unsqueeze(0)
 
+class VideoLaVITI2VLong:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model":("VideoLaVIT",),
+                "prompt":("STRING",{"multiline": True, "default":"FPV drone footage of an ancient city in autumn"}),
+                "image":("IMAGE",),
+                "clip_num":("INT",{"default":2}),
+                "video_width":("INT",{"default":576}),
+                "video_height":("INT",{"default":320}),
+                "guidance_scale_for_llm":("FLOAT",{"default":4.0}),
+                "num_inference_steps":("INT",{"default":50}),
+                "top_k":("INT",{"default":50}),
+                "seed":("INT",{"default":16}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+    FUNCTION = "run"
+    CATEGORY = "LaVIT"
+
+    def run(self,model,prompt,image,clip_num,video_width,video_height,guidance_scale_for_llm,num_inference_steps,top_k,seed):
+    
+        image = 255.0 * image[0].cpu().numpy()
+        image = Image.fromarray(np.clip(image, 0, 255).astype(np.uint8)).convert('RGB')
+        random.seed(seed)
+        torch.manual_seed(seed)
+        model_dtype='fp16'
+        torch_dtype = torch.bfloat16 if model_dtype=="bf16" else torch.float16
+        input_prompts = [(prompt, 'text'), (image, 'image')]
+        with torch.cuda.amp.autocast(enabled=True, dtype=torch_dtype):
+            videos, _ = model.multimodal_video_generate(input_prompts, video_width=video_width, video_height=video_height, 
+                    guidance_scale_for_llm=guidance_scale_for_llm, top_k=top_k, clip_num=clip_num)
+
+        clip_videos = videos[0][:24]
+        for i_clip in range(1, clip_num):
+            clip_videos += videos[0][i_clip * 24 + 1:i_clip * 24 + 24]
+        data = [torch.unsqueeze(torch.tensor(np.array(image).astype(np.float32) / 255.0), 0) for image in clip_videos]
+        return torch.cat(tuple(data), dim=0).unsqueeze(0)
+
 class VideoLaVITT2VLong:
     @classmethod
     def INPUT_TYPES(cls):
@@ -201,6 +242,7 @@ NODE_CLASS_MAPPINGS = {
     "VideoLaVITLoader":VideoLaVITLoader,
     "VideoLaVITT2V":VideoLaVITT2V,
     "VideoLaVITI2V":VideoLaVITI2V,
+    "VideoLaVITI2VLong":VideoLaVITI2VLong,
     "VideoLaVITT2VLong":VideoLaVITT2VLong,
     "VideoLaVITI2I":VideoLaVITI2I,
 }

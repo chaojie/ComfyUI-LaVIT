@@ -20,10 +20,14 @@
 
 <img src="wf_t2v_long.png" raw=true>
 
-### 1、Model Weights
+### Model Weights
 
 ```
  huggingface-cli download --resume-download rain1011/Video-LaVIT-v1 --local-dir ~/ComfyUI/models/diffusers/Video-LaVIT-v1 --local-dir-use-symlinks False
 ```
+
+### Notes
+
+Width and height must be multiples of 64
 
 ## [LaVIT](https://github.com/jy0205/LaVIT)
