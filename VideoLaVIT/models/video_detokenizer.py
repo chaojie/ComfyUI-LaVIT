@@ -105,8 +105,13 @@ class VideoDetokenizer(nn.Module):
 
     @torch.no_grad()
     def get_image_latents(self, x):
+        cpudevice = torch.device('cpu')
+        cudadevice = torch.device('cuda')
+        self.vae.to(cudadevice).to(dtype=torch.float16)
         print(f'self.vae.dtype{self.vae.dtype}')
         latents = self.vae.encode(x.to(self.vae.dtype)).latent_dist.mode()
+        self.vae.to(cpudevice)
+        torch.cuda.empty_cache()
         return latents
 
     def encode_motion(self, motion):
