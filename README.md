@@ -20,6 +20,12 @@
 
 <img src="wf_t2v_long.png" raw=true>
 
+### Video Reconstruction
+
+[Video Reconstruction](https://github.com/chaojie/ComfyUI-LaVIT/blob/main/wf_videoreconstruction.json)
+
+<img src="wf_videoreconstruction.png" raw=true>
+
 ### Model Weights
 
 ```
