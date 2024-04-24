@@ -13,7 +13,6 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
-from mvextractor.videocap import VideoCap
 from diffusers.image_processor import VaeImageProcessor
 
 
@@ -36,7 +35,8 @@ def extract_motions(video_path, raw_file=True, temp_dir=None, fps=6, rescale=Fal
     # Rescale for the input of motion tokenizer
     if rescale:
         std = std / 10.0
-
+        
+    from mvextractor.videocap import VideoCap
     # Load motion vector from raw video
     cap = VideoCap()
     ret = cap.open(temp_video_path)
